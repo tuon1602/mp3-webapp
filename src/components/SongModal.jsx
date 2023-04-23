@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 import { useEventStore } from "../../store/store";
 import { XMarkIcon } from "@heroicons/react/24/solid";
+import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
+
 import { Formik, Form, Field, useFormik } from "formik";
 import * as Yup from "yup";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { addDoc, collection } from "firebase/firestore";
 import { storage } from "../../db/db";
 import { db } from "../../db/db";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
+import { Tooltip } from "@mui/material";
+import Fade from "@mui/material/Fade";
 
 const SongModal = () => {
   //zustand
@@ -40,33 +44,35 @@ const SongModal = () => {
       lyrics: Yup.string().nullable(),
     }),
     onSubmit: async (values) => {
-        const songCollectionRef = collection(db, "mp3s");
-        try {
-          const docRef = await addDoc(songCollectionRef, {
-            song_path: values.song_path,
-            song_name: values.song_name,
-            author: values.author,
-            cover_path: values.cover_path,
-            lyrics: values.lyrics,
-          });
-          Swal.fire({
-            icon: 'success',
-            title: 'Nice!',
-            text: 'Upload song sucessfull',
-            showConfirmButton: false,
-            timer: 1500
-          })
-          // add any other success handling code here
-        } catch (e) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Something went wrong!',
-              })
-              
-          // add any error handling code here
-        }
+      const songCollectionRef = collection(db, "mp3s");
+      try {
+        const docRef = await addDoc(songCollectionRef, {
+          song_path: values.song_path,
+          song_name: values.song_name,
+          author: values.author,
+          cover_path: values.cover_path,
+          lyrics: values.lyrics,
+        });
+
+        await Swal.fire({
+          icon: "success",
+          title: "Nice!",
+          text: "Upload song sucessfull",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        window.location.reload();
+        // add any other success handling code here
+      } catch (e) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+        });
+
+        // add any error handling code here
       }
+    },
   });
 
   // const [hidden,setHidden ] = useState(false)
@@ -87,11 +93,11 @@ const SongModal = () => {
       });
     });
     Swal.fire({
-        icon: 'info',
-        title: 'Pending',
-        text: 'Check your song url box',
-        timer:3000
-      })
+      icon: "info",
+      title: "Pending",
+      text: "Check your song url box",
+      timer: 3000,
+    });
   };
   return (
     //     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
@@ -108,11 +114,17 @@ const SongModal = () => {
           <div class="fixed inset-0 z-10 overflow-y-auto">
             <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
               <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                
                 <div class="bg-gray-50 px-4 pb-4 pt-5 sm:p-6 sm:pb-4 flex items-center justify-between">
-                  <span className="font-bold text-slate-600 text-lg">
-                    Add your Song
-                  </span>
+                  <div className="flex items-center gap-3">
+                    <span className="font-bold text-slate-600 text-lg">
+                      Add your Song
+                    </span>
+                    <Tooltip TransitionComponent={Fade} TransitionProps={{timeout:500}} placement="top" title="Please check on list prevent duplicate song. Upload your song then press upload song to generate song URL">
+                    <ExclamationCircleIcon className="w-6 h-6 cursor-pointer" />
+
+                    </Tooltip>
+                  </div>
+
                   <button onClick={handleOnHideModal}>
                     <XMarkIcon className="w-6 h-6" />
                   </button>

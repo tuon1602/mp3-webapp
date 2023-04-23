@@ -6,6 +6,7 @@ import Loading from '../components/Main/Loading'
 import { useEventStore } from '../../store/store'
 import PlayList from './PlayList'
 import Setting from './Setting'
+import Lyrics from './Lyrics'
 const MainPage = () => {
   const globalShowComponentState = useEventStore((state)=>state.showComponent)
   const globalEvent = useEventStore((state)=>state.event)
@@ -13,7 +14,7 @@ const MainPage = () => {
   console.log(globalShowComponentState1)
   return (
     <>
-    <main className={`${globalShowComponentState || globalShowComponentState1 ? "hidden" : "block"} flex flex-col justify-between w-full h-full`} >
+    <main className={`${globalShowComponentState || globalShowComponentState1 || globalEvent ? "hidden" : "block"} flex flex-col justify-between w-full h-full`} >
         <Header/>
         {/* <Loading/> */}
         <MusicDetail/>
@@ -24,6 +25,9 @@ const MainPage = () => {
     </main>
     <main className={`${globalShowComponentState ? "block" : "hidden"} flex flex-col justify-between w-full h-full`}>
        <Setting/>
+    </main>
+    <main className={`${globalEvent ? "block" : "hidden"} w-full h-full`}>
+      <Lyrics/>
     </main>
    
     </>

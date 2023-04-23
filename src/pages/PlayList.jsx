@@ -39,14 +39,29 @@ const PlayList = () => {
   const [songData, setSongData] = useState([]);
   const [songAmount, setSongAmount] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredSongData, setFilteredSongData] = useState([]);
+  console.log(filteredSongData);
 
   useEffect(() => {
     async function fetchSongs() {
       const data = await getDocs(songCollectionRef);
       setSongData(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      setFilteredSongData(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
     }
     fetchSongs();
   }, []);
+
+  useEffect( () => {
+         setFilteredSongData(
+        songData.filter(
+          (song) =>
+            song.song_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            song.author.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      );
+    
+  }, [searchQuery]);
 
   useEffect(() => {
     setGlobalListLength(songData.length);
@@ -93,9 +108,9 @@ const PlayList = () => {
           </button>
         )}
       </div>
-      <div className="space-y-3 h-56  overflow-scroll">
-        {songData && songData.length>0 ? (
-          songData.map((data, index) => (
+      <div className="space-y-3 h-2/3 overflow-scroll">
+        {songData && songData.length > 0  ? (
+          filteredSongData.map((data, index) => (
             <div key={data.id}>
               <button onClick={() => handlePlayPause(data.id, index)}>
                 <p className="text-lg text-slate-600">
@@ -104,17 +119,21 @@ const PlayList = () => {
               </button>
             </div>
           ))
-        ) : (
-          <div className='flex items-center justify-center h-full'>
-          <p className='font-bold text-slate-600 text-xl'>It seems like we have error, no song found</p>
-        </div>
+        )
+        : (
+          <div className="flex items-center justify-center h-full">
+            <p className="font-bold text-slate-600 text-xl">
+              It seems like we have error, no song found
+            </p>
+          </div>
         )}
       </div>
       <div>
         <div>
           <input
-            placeholder="Search"
+            placeholder="Search song name"
             className="h-10 w-full border-b-2 border-slate-600"
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
         <div className="mt-5 flex justify-between">

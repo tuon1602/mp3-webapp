@@ -11,6 +11,8 @@ const Header = () => {
   const globalCurrentTime = useSongDataStore((state)=>state.currentTime)
   const globalDurationTime = useSongDataStore((state)=>state.duration)
   const globalVolumeTime = useSongDataStore((state)=>state.setVolume)
+  const globalSongName = useSongDataStore((state)=>state.songName)
+  const globalSongAuthor = useSongDataStore((state)=>state.author)
   // console.log(globalDurationTime)
   //react state
 
@@ -18,7 +20,8 @@ const Header = () => {
     globalVolumeTime(newValue)
   };
   return (
-    <main className="flex justify-between">
+    <main>
+       <div className="flex justify-between">
        <section className='flex gap-2 items-center'>
         {isPlayEvent===false? <h3 className='font-thin tracking-widest text-slate-600'>PAUSED</h3> :<h3 className='font-thin tracking-widest text-slate-600'>PLAYING</h3>}
         <span className='text-sm tracking-wider text-slate-600 font-bold'>{globalCurrentTime} / {globalDurationTime}</span>
@@ -28,7 +31,12 @@ const Header = () => {
         <Slider step={0.01} min={0} max={1} value={globalVolume} onChange={handleChange} size="small"/>
        </section> 
 
+    </div>
+    <div>
+    <p className="text-slate-600 font-bold">{globalSongName} - {globalSongAuthor}</p>
+    </div>
     </main>
+   
   )
 }
 

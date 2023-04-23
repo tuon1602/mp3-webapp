@@ -21,6 +21,7 @@ import { Slider, Tooltip } from "@mui/material";
 const Footer = () => {
   //zustand
   const event = useEventStore((state) => state.event);
+  const setEvent = useEventStore((state)=>state.setEvent)
   const setEventToOne = useEventStore((state) => state.setEventToOne);
   const setEventToTwo = useEventStore((state) => state.setEventToTwo);
   const songUrl = useSongDataStore((state) => state.songUrl);
@@ -59,6 +60,9 @@ const Footer = () => {
     // console.log(useEventStore.getState().event);
     setShowGlobalComponent(!globalShowComponentState)
   };
+  const handleOpenLyrics = () =>{
+    setEvent(!event)
+  }
   const handlePausePlaySong = () => {
     if (isPlay || globalIsPlay) {
       audioRef.current.pause();
@@ -161,7 +165,7 @@ const Footer = () => {
           {loop? <ArrowPathRoundedSquareIcon className="h-8 w-8 text-black hover:text-slate-600 cursor-pointer" onClick={handleLoopSong}/>: <ArrowPathRoundedSquareIcon className="h-8 w-8 text-gray-300 hover:text-slate-600 cursor-pointer" onClick={handleLoopSong}/>}
         </Tooltip>
         <Tooltip title="Lyrics">
-          <MusicalNoteIcon className="h-8 w-8 text-gray-300 hover:text-slate-600 cursor-pointer" />
+          <MusicalNoteIcon className="h-8 w-8 text-gray-300 hover:text-slate-600 cursor-pointer" onClick={handleOpenLyrics}/>
         </Tooltip>
         <Tooltip title="Setting">
           <Cog8ToothIcon

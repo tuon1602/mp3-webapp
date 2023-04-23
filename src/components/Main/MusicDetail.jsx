@@ -8,9 +8,13 @@ import { useSongDataStore } from "../../../store/store";
 const MusicDetail = () => {
   //zustand
   const setSongUrl = useSongDataStore((state)=>state.setSongUrl)
+  const setSongName = useSongDataStore((state)=>state.setSongName)
+  const setSongAuthor = useSongDataStore((state)=>state.setSongAuthor)
+
   const [songData, setSongData] = useState(null);
   const globalSongId = useSongDataStore((state)=>state.songId)
   const globalCurrentSongIndex = useSongDataStore((state)=>state.currentSongIndex)
+  
   // console.log(globalSongId)
   
   //test
@@ -21,6 +25,8 @@ const MusicDetail = () => {
       if (snap.exists()) {
         setSongData(snap.data());
         setSongUrl(snap.data().song_path)
+        setSongName(snap.data().song_name)
+        setSongAuthor(snap.data().author)
       } else {
         console.log("No such document");
       }
@@ -33,11 +39,8 @@ const MusicDetail = () => {
       <div>
         {songData ? (
           <>
-            <p className="text-slate-600 font-bold">{songData.song_name} - {songData.author}</p>
-            <div className="flex justify-center items-center ">
-              <div className="my-10">
-                <img src={MusicLogo} alt="MusicLogo" width={250} height={250} />
-              </div>
+            <div className="flex justify-center items-center "> 
+                <img src={MusicLogo} alt="MusicLogo" className="w-3/4 h-1/2" />
             </div>
           </>
         ) : (

@@ -2,10 +2,11 @@
 import {create} from "zustand"
 
 export const useEventStore = create((set,get)=>({
-    event:0,
+    event:false,
     showComponent: false,
     showComponent1:false,
     songModalEvent:false,
+    setEvent: () => set(state => ({ event: !state.event })),
     setEventToOne: () => set({ event: 1 }),
     setEventToTwo: () =>set({event:2}),
     setEventBackZero: () =>set({event:0}),
@@ -17,6 +18,8 @@ export const useEventStore = create((set,get)=>({
 
 export const useSongDataStore = create((set,get)=>({
     songUrl:"",
+    songName:"",
+    author:"",
     isPlay:false,
     currentTime:0,
     duration:0,
@@ -26,6 +29,8 @@ export const useSongDataStore = create((set,get)=>({
     currentSongIndex:0,
     listLength:0,
     setSongUrl: (songUrl) => set({ songUrl: songUrl }),
+    setSongName:(songName)=>set({songName:songName}),
+    setSongAuthor:(author)=>set({author:author}),
     setIsPlay:(isPlay)=>set({isPlay:isPlay}),
     setCurrentTime: (currentTime) => set({ currentTime: currentTime }),
     setDuration: (duration) => set({ duration: duration }),

@@ -11,7 +11,7 @@ const MainPage = () => {
   const globalShowComponentState = useEventStore((state)=>state.showComponent)
   const globalEvent = useEventStore((state)=>state.event)
   const globalShowComponentState1 = useEventStore((state)=>state.showComponent1)
-  console.log(globalShowComponentState1)
+  // console.log(globalShowComponentState1)
   return (
     <>
     <main className={`${globalShowComponentState || globalShowComponentState1 || globalEvent ? "hidden" : "block"} flex flex-col justify-between w-full h-full`} >

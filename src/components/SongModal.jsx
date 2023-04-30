@@ -13,7 +13,11 @@ import Swal from "sweetalert2";
 import { Tooltip } from "@mui/material";
 import Fade from "@mui/material/Fade";
 
+import { useTranslation } from "react-i18next";
+
 const SongModal = () => {
+  //i18n
+  const { t } = useTranslation();
   //zustand
   const globalSongModalEvent = useEventStore((state) => state.songModalEvent);
   const globalSetSongModalEvent = useEventStore(
@@ -84,7 +88,14 @@ const SongModal = () => {
 
   //   }
   const uploadSong = () => {
-    if (uploadSongValue == null) return;
+    if (uploadSongValue === null) {
+      Swal.fire({
+        icon: "error",
+        title: "There's no input song",
+        text: "Check your input song",
+        showConfirmButton: true,
+      });
+    }
     const songRef = ref(storage, `${uploadSongValue.name}`);
     uploadBytes(songRef, uploadSongValue).then((snapshot) => {
       setSongUrl("");
@@ -99,6 +110,7 @@ const SongModal = () => {
       timer: 3000,
     });
   };
+  console.log(uploadSongValue.name);
   return (
     //     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
     //     {/* Modal content */}
@@ -117,11 +129,15 @@ const SongModal = () => {
                 <div class="bg-gray-50 px-4 pb-4 pt-5 sm:p-6 sm:pb-4 flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <span className="font-bold text-slate-600 text-lg">
-                      Add your Song
+                      {t("Add your song")}
                     </span>
-                    <Tooltip TransitionComponent={Fade} TransitionProps={{timeout:500}} placement="top" title="Please check on list prevent duplicate song. Upload your song then press upload song to generate song URL">
-                    <ExclamationCircleIcon className="w-6 h-6 cursor-pointer" />
-
+                    <Tooltip
+                      TransitionComponent={Fade}
+                      TransitionProps={{ timeout: 500 }}
+                      placement="top"
+                      title="Please check on list prevent duplicate song. Upload your song then press upload song to generate song URL"
+                    >
+                      <ExclamationCircleIcon className="w-6 h-6 cursor-pointer" />
                     </Tooltip>
                   </div>
 
@@ -134,7 +150,7 @@ const SongModal = () => {
                   <div className="flex flex-col mt-2">
                     <div>
                       <label className="text-slate-600 font-bold">
-                        Your song file
+                        {t("Your song file")}
                       </label>
                       <span className="text-red-400"> *</span>
                     </div>
@@ -145,19 +161,29 @@ const SongModal = () => {
                       }}
                       accept="audio/*"
                     />
-                    <button
-                      className="px-4 py-2 bg-slate-600 text-white hover:opacity-50 mt-2"
-                      onClick={uploadSong}
-                    >
-                      Upload song
-                    </button>
+                    {uploadSongValue.name ? (
+                      <button
+                        className="px-4 py-2 bg-slate-600 text-white hover:opacity-50 mt-2"
+                        onClick={uploadSong}
+                      >
+                        {t("Upload song")}
+                      </button>
+                    ) : (
+                      <button
+                        className="px-4 py-2 bg-slate-600 text-white hover:opacity-50 mt-2 disabled:opacity-50"
+                        onClick={uploadSong}
+                        disabled
+                      >
+                        {t("Upload song")}
+                      </button>
+                    )}
                   </div>
 
                   <form onSubmit={formik.handleSubmit}>
                     <div className="flex flex-col">
                       <div>
                         <label className="text-slate-600 font-bold">
-                          Song name
+                          {t("Song name")}
                         </label>
                         <span className="text-red-400"> *</span>
                       </div>
@@ -166,7 +192,7 @@ const SongModal = () => {
                         name="song_name"
                         value={formik.values.song_name}
                         onChange={formik.handleChange}
-                        placeholder="This should be song name"
+                        placeholder= {t("AddSongPlaceholder")}
                       />
                       {formik.errors.song_name && formik.touched.song_name && (
                         <p className="text-red-600">
@@ -177,7 +203,7 @@ const SongModal = () => {
                     <div className="flex flex-col mt-2">
                       <div>
                         <label className="text-slate-600 font-bold">
-                          Author
+                          {t("Author")}
                         </label>
                         <span className="text-red-400"> *</span>
                       </div>
@@ -186,7 +212,7 @@ const SongModal = () => {
                         name="author"
                         value={formik.values.author}
                         onChange={formik.handleChange}
-                        placeholder="Right author please"
+                        placeholder={t("AuthorPlaceholder")}
                       />
                       {formik.errors.author && formik.touched.author && (
                         <p className="text-red-600">{formik.errors.author}</p>
@@ -195,7 +221,7 @@ const SongModal = () => {
                     <div className="flex flex-col mt-2">
                       <div>
                         <label className="text-slate-600 font-bold">
-                          Song Url
+                          {t("Song Url")}
                         </label>
                         <span className="text-red-400"> *</span>
                       </div>
@@ -206,7 +232,7 @@ const SongModal = () => {
                           formik.setFieldValue("song_path", event.target.value)
                         }
                         value={(formik.values.song_path = songUrl)}
-                        placeholder="This should be generated from upload song"
+                        placeholder={t("SongUrlPlaceholder")}
                       />
                       {formik.errors.song_path && formik.touched.song_path && (
                         <p className="text-red-600">
@@ -216,14 +242,14 @@ const SongModal = () => {
                     </div>
                     <div className="flex flex-col mt-2">
                       <label className="text-slate-600 font-bold">
-                        Your background image
+                        {t("Your background image")}
                       </label>
                       <input
                         type="text"
                         name="cover_path"
                         value={formik.values.cover_path}
                         onChange={formik.handleChange}
-                        placeholder="This should be image link"
+                        placeholder={t("BackgroundPlaceholder")}
                       />
                       {formik.errors.cover_path &&
                         formik.touched.cover_path && (
@@ -231,7 +257,10 @@ const SongModal = () => {
                         )}
                     </div>
                     <div className="flex flex-col mt-2">
-                      <label className="text-slate-600 font-bold">Lyrics</label>
+                      <label className="text-slate-600 font-bold">
+                        {" "}
+                        {t("Lyrics")}
+                      </label>
                       <textarea
                         type="text"
                         name="lyrics"
@@ -247,7 +276,7 @@ const SongModal = () => {
                         type="submit"
                         className="px-4 py-2 bg-black text-white rounded-md mt-2 hover:opacity-50"
                       >
-                        Add
+                        {t("Add")}
                       </button>
                     </div>
                   </form>

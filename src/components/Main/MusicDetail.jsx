@@ -10,6 +10,7 @@ const MusicDetail = () => {
   const setSongUrl = useSongDataStore((state)=>state.setSongUrl)
   const setSongName = useSongDataStore((state)=>state.setSongName)
   const setSongAuthor = useSongDataStore((state)=>state.setSongAuthor)
+  const setSongLyric = useSongDataStore((state)=>state.setSongLyric)
 
   const [songData, setSongData] = useState(null);
   const globalSongId = useSongDataStore((state)=>state.songId)
@@ -27,6 +28,7 @@ const MusicDetail = () => {
         setSongUrl(snap.data().song_path)
         setSongName(snap.data().song_name)
         setSongAuthor(snap.data().author)
+        setSongLyric(snap.data().lyrics)
       } else {
         console.log("No such document");
       }

@@ -5,9 +5,13 @@ import { useEventStore } from "../../store/store";
 import { ArrowLongLeftIcon, PlusIcon } from "@heroicons/react/24/solid";
 import { useSongDataStore } from "../../store/store";
 import SongModal from "../components/SongModal";
-import PlayListLoading from "../components/PlayListLoading";
+import { useTranslation } from "react-i18next";
+
 
 const PlayList = () => {
+  //i18next
+  const {t} = useTranslation()
+  //
   const setGlobalSongId = useSongDataStore((state) => state.setSongId);
   const setGlobalSongIndex = useSongDataStore((state) => state.setSongIndex);
   const globalSongIndex = useSongDataStore((state) => state.songIndex);
@@ -41,7 +45,7 @@ const PlayList = () => {
   const [showModal, setShowModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredSongData, setFilteredSongData] = useState([]);
-  console.log(filteredSongData);
+  // console.log(filteredSongData);
 
   useEffect(() => {
     async function fetchSongs() {
@@ -93,18 +97,18 @@ const PlayList = () => {
   return (
     <main className="flex flex-col w-full h-full justify-between">
       <div className="flex justify-between ">
-        <p className="text-slate-600 tracking-widest text-lg font-bold">
-          PlAYLIST
+        <p className="text-slate-600 tracking-widest text-lg font-bold dark:text-gray-400">
+          {t("Playlist")}
         </p>
         {globalSongModalEvent ? (
           <SongModal />
         ) : (
           <button
-            className="flex gap-1 font-bold text-slate-600"
+            className="flex gap-1 font-bold text-slate-600 dark:text-gray-400"
             onClick={handleButtonAddSong}
           >
             <PlusIcon className="h-6 w-6" />
-            Add Song
+            {t("Add song")}
           </button>
         )}
       </div>
@@ -113,7 +117,7 @@ const PlayList = () => {
           filteredSongData.map((data, index) => (
             <div key={data.id}>
               <button onClick={() => handlePlayPause(data.id, index)}>
-                <p className="text-lg text-slate-600">
+                <p className="text-lg text-slate-600 dark:text-gray-400">
                   {data.song_name} - {data.author}
                 </p>
               </button>
@@ -122,8 +126,8 @@ const PlayList = () => {
         )
         : (
           <div className="flex items-center justify-center h-full">
-            <p className="font-bold text-slate-600 text-xl">
-              It seems like we have error, no song found
+            <p className="font-bold text-slate-600 text-xl dark:text-gray-400">
+              {t("SongError")}
             </p>
           </div>
         )}
@@ -131,19 +135,19 @@ const PlayList = () => {
       <div>
         <div>
           <input
-            placeholder="Search song name"
-            className="h-10 w-full border-b-2 border-slate-600"
+            placeholder={t("Search song name")}
+            className="h-10 w-full border-b-2 border-black dark:bg-slate-600 dark:placeholder-gray-200 dark:border-white "
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
         <div className="mt-5 flex justify-between">
-          <p className="font-bold text-md">{songData.length} Song</p>
+          <p className="font-bold text-md dark:text-gray-400">{songData.length} {t("Songs")}</p>
           <div
             onClick={handleBackToMainPage}
             className="flex items-center gap-1 cursor-pointer"
           >
-            <ArrowLongLeftIcon className="w-6 h-6" />
-            <span className="font-bold text-slate-600">BACK</span>
+            <ArrowLongLeftIcon className="w-6 h-6 dark:text-gray-400" />
+            <span className="font-bold text-slate-600 dark:text-gray-400">{t("Back")}</span>
           </div>
         </div>
       </div>

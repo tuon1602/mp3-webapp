@@ -11,7 +11,7 @@ import { useDarkModeStore } from "../../store/store";
 import BackDropButton from "../components/BackDropButton";
 import { useTranslation } from "react-i18next";
 import Swal from 'sweetalert2/dist/sweetalert2.js'
-import DonationImage from "../../src/assets/Donation.jpg"
+import DonationImage from "/src/assets/donation.jpg"
 
 const SettingSection = (props) => {
   //

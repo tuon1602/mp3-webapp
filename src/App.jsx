@@ -14,7 +14,6 @@ function App() {
   console.log(backdropColor)
   const { isDarkMode } = useDarkModeStore();
   // const event = useEventStore((state) => state.event);
-
   // console.log(backDropColor)
   return (
       <div className={`${backdropColor ? `bg-${backdropColor}`  : 'bg-pink'} w-screen h-screen flex justify-center items-center ${isDarkMode? 'dark' : 'light'}`}>

@@ -17,7 +17,7 @@ function App() {
   // console.log(backDropColor)
   return (
       <div className={`${backdropColor ? `bg-${backdropColor}`  : 'bg-pink'} w-screen h-screen flex justify-center items-center ${isDarkMode? 'dark' : 'light'}`}>
-        <div className="w-2/6 h-3/4 bg-white rounded-xl p-8 dark:bg-slate-600 xs:w-full xs:h-3/4 sm:w-3/4 md:w-3/6 md:h-4/6 xl:w-2/5 xl:h-3/4">
+        <div className="w-2/6 h-3/4 bg-white rounded-xl p-8 dark:bg-slate-600 xs:w-full xs:h-5/6 sm:w-3/4 md:w-3/6 md:h-4/6 xl:w-2/5 xl:h-3/4">
           {/* <main className="p-8 w-full h-full"> */}
           <MainPage />
           {/* </main> */}
